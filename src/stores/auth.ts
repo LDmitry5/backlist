@@ -11,7 +11,7 @@ import type {
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
-function getStoredUser(): AuthUser | null {
+const getStoredUser = (): AuthUser | null => {
   const storedUser = localStorage.getItem(USER_KEY);
 
   if (!storedUser) {
@@ -25,7 +25,7 @@ function getStoredUser(): AuthUser | null {
 
     return null;
   }
-}
+};
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(
@@ -40,9 +40,9 @@ export const useAuthStore = defineStore('auth', () => {
     return Boolean(token.value);
   });
 
-  async function login(
+  const login = async (
     credentials: LoginRequest,
-  ): Promise<void> {
+  ): Promise<void> => {
     const response = await loginRequest(credentials);
 
     token.value = response.data.token;
@@ -57,15 +57,15 @@ export const useAuthStore = defineStore('auth', () => {
       USER_KEY,
       JSON.stringify(response.data.user),
     );
-  }
+  };
 
-  function logout(): void {
+  const logout = (): void => {
     token.value = null;
     user.value = null;
 
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-  }
+  };
 
   return {
     token,

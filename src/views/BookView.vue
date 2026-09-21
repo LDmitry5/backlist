@@ -21,7 +21,7 @@ const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const isDeleting = ref(false);
 
-async function loadBook(): Promise<void> {
+const loadBook = async (): Promise<void> => {
   isLoading.value = true;
   error.value = null;
 
@@ -43,13 +43,13 @@ async function loadBook(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-function goBack(): void {
+const goBack = (): void => {
   router.back();
-}
+};
 
-async function handleDelete(): Promise<void> {
+const handleDelete = async (): Promise<void> => {
   if (!book.value || isDeleting.value) {
     return;
   }
@@ -73,7 +73,7 @@ async function handleDelete(): Promise<void> {
   } finally {
     isDeleting.value = false;
   }
-}
+};
 
 onMounted(() => {
   void loadBook();
@@ -82,13 +82,11 @@ onMounted(() => {
 
 <template>
   <main class="container py-4 py-lg-5">
-    <!-- Back -->
     <button type="button" class="btn btn-link px-0 mb-4" @click="goBack">
       <i class="bi bi-arrow-left me-2"></i>
       Назад
     </button>
 
-    <!-- Loading -->
     <div v-if="isLoading" class="book-page__loading">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden"> Загрузка... </span>
@@ -97,7 +95,6 @@ onMounted(() => {
       <p class="text-secondary mt-3 mb-0">Загружаем информацию о книге...</p>
     </div>
 
-    <!-- Error -->
     <div v-else-if="error" class="alert alert-danger" role="alert">
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-exclamation-triangle"></i>
@@ -114,10 +111,8 @@ onMounted(() => {
       </button>
     </div>
 
-    <!-- Book -->
     <article v-else-if="book" class="book-page">
       <div class="row g-4 g-lg-5">
-        <!-- Cover -->
         <div class="col-12 col-md-5 col-lg-4">
           <div class="book-page__cover">
             <img
@@ -133,7 +128,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Content -->
         <div class="col-12 col-md-7 col-lg-8">
           <div class="book-page__year text-secondary">
             {{ book.year }}
@@ -143,7 +137,6 @@ onMounted(() => {
             {{ book.title }}
           </h1>
 
-          <!-- Authors -->
           <div class="mb-4">
             <div class="text-secondary small mb-2">Авторы</div>
 
@@ -165,7 +158,6 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- ISBN -->
           <div v-if="book.isbn" class="mb-4">
             <div class="text-secondary small mb-1">ISBN</div>
 
@@ -174,7 +166,6 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Description -->
           <div v-if="book.description">
             <h2 class="h5 mb-2">О книге</h2>
 
@@ -183,7 +174,6 @@ onMounted(() => {
             </p>
           </div>
 
-          <!-- Actions -->
           <div class="d-flex gap-2">
             <RouterLink
               :to="{ name: 'books' }"

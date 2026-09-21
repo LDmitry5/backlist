@@ -20,7 +20,7 @@ const isSaving = ref(false);
 
 const error = ref("");
 
-function getBookId(): number | null {
+const getBookId = (): number | null => {
   const id = Number(route.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -28,9 +28,9 @@ function getBookId(): number | null {
   }
 
   return id;
-}
+};
 
-async function loadBook(): Promise<void> {
+const loadBook = async (): Promise<void> => {
   const id = getBookId();
 
   if (!id) {
@@ -51,9 +51,9 @@ async function loadBook(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-async function handleSubmit(data: BookFormSubmit): Promise<void> {
+const handleSubmit = async (data: BookFormSubmit): Promise<void> => {
   const id = getBookId();
 
   if (!id) {
@@ -97,9 +97,9 @@ async function handleSubmit(data: BookFormSubmit): Promise<void> {
   } finally {
     isSaving.value = false;
   }
-}
+};
 
-function handleCancel(): void {
+const handleCancel = (): void => {
   if (book.value) {
     void router.push({
       name: "book",
@@ -114,7 +114,7 @@ function handleCancel(): void {
   void router.push({
     name: "books",
   });
-}
+};
 
 onMounted(() => {
   void loadBook();

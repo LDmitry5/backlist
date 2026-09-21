@@ -2,10 +2,10 @@ import axios from 'axios';
 
 import type { ApiError } from '../types/api';
 
-export function getApiErrorMessage(
+export const getApiErrorMessage = (
   error: unknown,
   fallback = 'Произошла ошибка.',
-): string {
+): string => {
   if (!axios.isAxiosError(error)) {
     return fallback;
   }
@@ -19,9 +19,9 @@ export function getApiErrorMessage(
     data.errors?.length
   ) {
     return data.errors
-      .map((item) => item.message)
+      .map((errorItem) => errorItem.message)
       .join(' ');
   }
 
   return fallback;
-}
+};

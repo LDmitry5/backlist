@@ -16,7 +16,7 @@ const password = ref("");
 const isLoading = ref(false);
 const error = ref<string | null>(null);
 
-async function submit(): Promise<void> {
+const submit = async (): Promise<void> => {
   error.value = null;
 
   if (!username.value || !password.value) {
@@ -49,7 +49,7 @@ async function submit(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 </script>
 
 <template>

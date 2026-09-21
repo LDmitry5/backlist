@@ -4,6 +4,7 @@ import { onMounted, ref, watch, computed } from "vue";
 import { getBooks } from "../api/books";
 import { getAuthors } from "../api/authors";
 import { useAuthStore } from "../stores/auth";
+import logger from "../utils/logger";
 
 import BookCard from "../components/books/BookCard.vue";
 
@@ -34,7 +35,7 @@ let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 
-async function loadBooks(): Promise<void> {
+const loadBooks = async (): Promise<void> => {
   isLoading.value = true;
   error.value = null;
 
@@ -49,16 +50,16 @@ async function loadBooks(): Promise<void> {
 
     books.value = response.data.items;
     pagination.value = response.data.pagination;
-  } catch (err) {
-    console.error(err);
+  } catch (requestError) {
+    logger.error(requestError, "Не удалось загрузить каталог книг");
 
     error.value = "Не удалось загрузить каталог книг. Попробуйте ещё раз.";
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-async function loadAuthors(): Promise<void> {
+const loadAuthors = async (): Promise<void> => {
   isLoadingAuthors.value = true;
 
   try {
@@ -67,14 +68,14 @@ async function loadAuthors(): Promise<void> {
     });
 
     authors.value = response.data.items;
-  } catch (err) {
-    console.error(err);
+  } catch (requestError) {
+    logger.error(requestError, "Не удалось загрузить список авторов");
   } finally {
     isLoadingAuthors.value = false;
   }
-}
+};
 
-function changePage(page: number): void {
+const changePage = (page: number): void => {
   if (
     page < 1 ||
     page > pagination.value.total_pages ||
@@ -86,38 +87,37 @@ function changePage(page: number): void {
   pagination.value.page = page;
 
   void loadBooks();
-}
+};
 
-function resetFilters(): void {
+const resetFilters = (): void => {
   search.value = "";
   year.value = "";
   authorId.value = "";
   pagination.value.page = 1;
 
   void loadBooks();
-}
+};
 
-function getPageNumbers(): number[] {
-  const totalPages = pagination.value.total_pages;
+const getPageNumbers = (): number[] => {
+  const totalPagesCount = pagination.value.total_pages;
   const currentPage = pagination.value.page;
 
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  if (totalPagesCount <= 7) {
+    return Array.from({ length: totalPagesCount }, (_, index) => index + 1);
   }
 
   const pages = new Set<number>([
     1,
-    totalPages,
+    totalPagesCount,
     currentPage,
     currentPage - 1,
     currentPage + 1,
   ]);
 
   return [...pages]
-    .filter((page) => page >= 1 && page <= totalPages)
+    .filter((page) => page >= 1 && page <= totalPagesCount)
     .sort((a, b) => a - b);
-}
-
+};
 watch([search, year, authorId], () => {
   pagination.value.page = 1;
 

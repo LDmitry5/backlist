@@ -18,7 +18,7 @@ const isSaving = ref(false);
 
 const error = ref("");
 
-function getAuthorId(): number | null {
+const getAuthorId = (): number | null => {
   const id = Number(route.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -26,9 +26,9 @@ function getAuthorId(): number | null {
   }
 
   return id;
-}
+};
 
-async function loadAuthor(): Promise<void> {
+const loadAuthor = async (): Promise<void> => {
   const id = getAuthorId();
 
   if (!id) {
@@ -46,9 +46,9 @@ async function loadAuthor(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-async function handleSubmit(fullName: string): Promise<void> {
+const handleSubmit = async (fullName: string): Promise<void> => {
   const id = getAuthorId();
 
   if (!id) {
@@ -75,9 +75,9 @@ async function handleSubmit(fullName: string): Promise<void> {
   } finally {
     isSaving.value = false;
   }
-}
+};
 
-function handleCancel(): void {
+const handleCancel = (): void => {
   if (author.value) {
     void router.push({
       name: "author",
@@ -92,7 +92,7 @@ function handleCancel(): void {
   void router.push({
     name: "authors",
   });
-}
+};
 
 onMounted(() => {
   void loadAuthor();

@@ -14,7 +14,7 @@ const error = ref("");
 
 const hasData = computed(() => authors.value.length > 0);
 
-async function loadReport(): Promise<void> {
+const loadReport = async (): Promise<void> => {
   error.value = "";
   isLoading.value = true;
 
@@ -31,11 +31,11 @@ async function loadReport(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-function handleYearChange(): void {
+const handleYearChange = (): void => {
   void loadReport();
-}
+};
 
 onMounted(() => {
   void loadReport();
@@ -44,7 +44,6 @@ onMounted(() => {
 
 <template>
   <div class="container py-4">
-    <!-- Header -->
     <div
       class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
     >
@@ -71,14 +70,12 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Loading -->
     <div v-if="isLoading" class="d-flex justify-content-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden"> Загрузка... </span>
       </div>
     </div>
 
-    <!-- Error -->
     <div v-else-if="error" class="alert alert-danger">
       <div class="d-flex justify-content-between align-items-center gap-3">
         <span>{{ error }}</span>
@@ -93,7 +90,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Empty -->
     <div v-else-if="!hasData" class="card border-0 shadow-sm">
       <div class="card-body text-center py-5">
         <i class="bi bi-bar-chart text-secondary fs-1" aria-hidden="true"></i>
@@ -106,7 +102,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Report -->
     <template v-else>
       <div class="card border-0 shadow-sm overflow-hidden">
         <div class="table-responsive">

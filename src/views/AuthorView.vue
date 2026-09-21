@@ -24,7 +24,7 @@ const error = ref("");
 
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 
-function getAuthorId(): number | null {
+const getAuthorId = (): number | null => {
   const id = Number(route.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -32,9 +32,9 @@ function getAuthorId(): number | null {
   }
 
   return id;
-}
+};
 
-async function loadAuthor(): Promise<void> {
+const loadAuthor = async (): Promise<void> => {
   const id = getAuthorId();
 
   if (!id) {
@@ -52,9 +52,9 @@ async function loadAuthor(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-async function handleDelete(): Promise<void> {
+const handleDelete = async (): Promise<void> => {
   if (!author.value || isDeleting.value) {
     return;
   }
@@ -84,7 +84,7 @@ async function handleDelete(): Promise<void> {
   } finally {
     isDeleting.value = false;
   }
-}
+};
 
 onMounted(() => {
   void loadAuthor();
@@ -108,7 +108,6 @@ onMounted(() => {
         {{ error }}
       </div>
 
-      <!-- Заголовок -->
       <div
         class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
       >
@@ -160,7 +159,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Книги -->
       <section>
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2 class="h4 mb-0">Книги автора</h2>

@@ -11,25 +11,23 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 
 const username = computed(() => authStore.user?.username ?? "");
 
-function logout(): void {
+const logout = (): void => {
   authStore.logout();
 
   void router.push({
     name: "login",
   });
-}
+};
 </script>
 
 <template>
   <header class="navbar navbar-expand-lg bg-white border-bottom">
     <div class="container">
-      <!-- Logo -->
       <RouterLink to="/books" class="navbar-brand fw-semibold">
         <i class="bi bi-book me-2"></i>
         Book Catalog
       </RouterLink>
 
-      <!-- Mobile toggle -->
       <button
         class="navbar-toggler"
         type="button"
@@ -43,7 +41,6 @@ function logout(): void {
       </button>
 
       <div id="main-navigation" class="collapse navbar-collapse">
-        <!-- Navigation -->
         <nav class="navbar-nav me-auto">
           <RouterLink to="/books" class="nav-link" active-class="active">
             Книги
@@ -62,7 +59,6 @@ function logout(): void {
           </RouterLink>
         </nav>
 
-        <!-- User -->
         <div class="d-flex align-items-center gap-3">
           <template v-if="isAuthenticated">
             <span class="text-secondary small">

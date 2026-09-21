@@ -27,7 +27,7 @@ const error = ref("");
 
 let searchTimeout: ReturnType<typeof setTimeout> | undefined;
 
-async function loadAuthors(): Promise<void> {
+const loadAuthors = async (): Promise<void> => {
   isLoading.value = true;
   error.value = "";
 
@@ -55,9 +55,9 @@ async function loadAuthors(): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-function goToPage(nextPage: number): void {
+const goToPage = (nextPage: number): void => {
   if (nextPage < 1 || nextPage > totalPages.value || nextPage === page.value) {
     return;
   }
@@ -65,7 +65,7 @@ function goToPage(nextPage: number): void {
   page.value = nextPage;
 
   void loadAuthors();
-}
+};
 
 const visiblePages = computed(() => {
   const pages: number[] = [];
@@ -99,7 +99,6 @@ onMounted(() => {
 
 <template>
   <div class="container py-4">
-    <!-- Header -->
     <div
       class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
     >
@@ -119,7 +118,6 @@ onMounted(() => {
       </RouterLink>
     </div>
 
-    <!-- Search -->
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body">
         <label for="authors-search" class="form-label"> Поиск </label>
@@ -140,14 +138,12 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Loading -->
     <div v-if="isLoading" class="d-flex justify-content-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden"> Загрузка... </span>
       </div>
     </div>
 
-    <!-- Error -->
     <div v-else-if="error" class="alert alert-danger">
       {{ error }}
 
@@ -160,7 +156,6 @@ onMounted(() => {
       </button>
     </div>
 
-    <!-- Empty -->
     <div v-else-if="authors.length === 0" class="card border-0 shadow-sm">
       <div class="card-body text-center py-5">
         <i class="bi bi-person-x text-secondary fs-1" aria-hidden="true"></i>
@@ -171,7 +166,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Authors -->
     <template v-else>
       <div class="row g-3">
         <div
@@ -199,7 +193,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Pagination -->
       <nav
         v-if="totalPages > 1"
         class="mt-4"

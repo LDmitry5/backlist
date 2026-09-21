@@ -12,7 +12,7 @@ const router = useRouter();
 const isLoading = ref(false);
 const error = ref("");
 
-async function handleSubmit(fullName: string): Promise<void> {
+const handleSubmit = async (fullName: string): Promise<void> => {
   error.value = "";
   isLoading.value = true;
 
@@ -35,13 +35,13 @@ async function handleSubmit(fullName: string): Promise<void> {
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-function handleCancel(): void {
+const handleCancel = (): void => {
   void router.push({
     name: "authors",
   });
-}
+};
 </script>
 
 <template>

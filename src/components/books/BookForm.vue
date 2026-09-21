@@ -45,7 +45,7 @@ const authorsError = ref("");
 
 const validationError = ref("");
 
-function initializeForm(): void {
+const initializeForm = (): void => {
   if (!props.book) {
     return;
   }
@@ -55,9 +55,9 @@ function initializeForm(): void {
   description.value = props.book.description ?? "";
   isbn.value = props.book.isbn ?? "";
   authorIds.value = props.book.authors.map((author) => author.id);
-}
+};
 
-async function loadAuthors(): Promise<void> {
+const loadAuthors = async (): Promise<void> => {
   isLoadingAuthors.value = true;
   authorsError.value = "";
 
@@ -72,15 +72,15 @@ async function loadAuthors(): Promise<void> {
   } finally {
     isLoadingAuthors.value = false;
   }
-}
+};
 
-function handleCoverChange(event: Event): void {
+const handleCoverChange = (event: Event): void => {
   const input = event.target as HTMLInputElement;
 
   cover.value = input.files?.[0] ?? null;
-}
+};
 
-function validate(): boolean {
+const validate = (): boolean => {
   validationError.value = "";
 
   if (!title.value.trim()) {
@@ -104,9 +104,9 @@ function validate(): boolean {
   }
 
   return true;
-}
+};
 
-function submit(): void {
+const submit = (): void => {
   if (!validate() || !year.value) {
     return;
   }
@@ -119,7 +119,7 @@ function submit(): void {
     author_ids: authorIds.value,
     cover: cover.value,
   });
-}
+};
 
 onMounted(() => {
   initializeForm();
@@ -138,7 +138,6 @@ onMounted(() => {
         {{ authorsError }}
       </div>
 
-      <!-- Название -->
       <div class="mb-3">
         <label for="book-title" class="form-label"> Название </label>
 
@@ -152,7 +151,6 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Год -->
       <div class="mb-3">
         <label for="book-year" class="form-label"> Год издания </label>
 
@@ -167,7 +165,6 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Авторы -->
       <div class="mb-3">
         <label for="book-authors" class="form-label"> Авторы </label>
 
@@ -188,7 +185,6 @@ onMounted(() => {
         <div v-if="isLoadingAuthors" class="form-text">Загрузка авторов...</div>
       </div>
 
-      <!-- ISBN -->
       <div class="mb-3">
         <label for="book-isbn" class="form-label"> ISBN </label>
 
@@ -202,7 +198,6 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Описание -->
       <div class="mb-3">
         <label for="book-description" class="form-label"> Описание </label>
 
@@ -216,7 +211,6 @@ onMounted(() => {
         ></textarea>
       </div>
 
-      <!-- Обложка -->
       <div class="mb-4">
         <label for="book-cover" class="form-label"> Обложка </label>
 
@@ -238,7 +232,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Actions -->
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary" :disabled="loading">
           <span

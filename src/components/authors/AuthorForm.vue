@@ -25,7 +25,7 @@ const fullName = ref(props.author?.full_name ?? "");
 
 const validationError = ref("");
 
-function submit(): void {
+const submit = (): void => {
   validationError.value = "";
 
   const value = fullName.value.trim();
@@ -36,7 +36,7 @@ function submit(): void {
   }
 
   emit("submit", value);
-}
+};
 </script>
 
 <template>
