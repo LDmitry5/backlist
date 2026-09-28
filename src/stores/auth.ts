@@ -28,35 +28,23 @@ const getStoredUser = (): AuthUser | null => {
 };
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref<string | null>(
-    localStorage.getItem(TOKEN_KEY),
-  );
+  const token = ref<string | null>(localStorage.getItem(TOKEN_KEY));
+  const user = ref<AuthUser | null>(getStoredUser());
 
-  const user = ref<AuthUser | null>(
-    getStoredUser(),
-  );
+  const saveSession = (tokenValue: string, currentUser: AuthUser): void => {
+    token.value = tokenValue;
+    user.value = currentUser;
 
-  const isAuthenticated = computed(() => {
-    return Boolean(token.value);
-  });
+    localStorage.setItem(TOKEN_KEY, tokenValue);
+    localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+  };
 
-  const login = async (
-    credentials: LoginRequest,
-  ): Promise<void> => {
+  const isAuthenticated = computed(() => Boolean(token.value));
+
+  const login = async (credentials: LoginRequest): Promise<void> => {
     const response = await loginRequest(credentials);
 
-    token.value = response.data.token;
-    user.value = response.data.user;
-
-    localStorage.setItem(
-      TOKEN_KEY,
-      response.data.token,
-    );
-
-    localStorage.setItem(
-      USER_KEY,
-      JSON.stringify(response.data.user),
-    );
+    saveSession(response.data.token, response.data.user);
   };
 
   const logout = (): void => {

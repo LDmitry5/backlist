@@ -21,7 +21,7 @@ import TopAuthorsView from '../views/TopAuthorsView.vue';
 import { useAuthStore } from '../stores/auth';
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/backlist/'),
 
   routes: [
     {

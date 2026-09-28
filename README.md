@@ -1,5 +1,49 @@
-# Vue 3 + TypeScript + Vite
+# Backlist
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Приложение на Vue 3 + TypeScript + Vite с mock API через MSW.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Требования
+
+- Node.js 18+
+- npm
+
+## Установка зависимостей
+
+```bash
+npm install
+```
+
+## Запуск в режиме разработки
+
+```bash
+npm run dev
+```
+
+После запуска откройте адрес, который покажет Vite в терминале, обычно:
+
+```text
+http://localhost:5173
+```
+
+## Что важно для проверки
+
+- В dev-режиме приложение запускает MSW до монтирования интерфейса.
+- API-моки настроены на базовый путь `/api/v1`.
+- Все не-API запросы Vite/статические файлы игнорируются через `onUnhandledRequest: 'bypass'`.
+- Запросы к `/api/v1/books`, `/api/v1/authors` и `/api/v1/reports/top-authors` обрабатываются mock-обработчиками.
+
+## Сборка проекта
+
+```bash
+npm run build
+```
+
+## Предпросмотр собранного проекта
+
+```bash
+npm run preview
+```
+
+## Полезное замечание
+
+Если локально возникают ошибки `404` или `Failed to fetch` в dev-режиме, сначала убедитесь, что запущен `npm run dev` и открыта страница через Vite URL, а не напрямую через статические файлы. В проекте MSW инициализируется до рендера приложения, чтобы запросы не уходили раньше, чем активирован мок-сервер.

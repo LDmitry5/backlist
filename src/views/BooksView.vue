@@ -116,9 +116,10 @@ const getPageNumbers = (): number[] => {
 
   return [...pages]
     .filter((page) => page >= 1 && page <= totalPagesCount)
-    .sort((a, b) => a - b);
+    .sort((left, right) => left - right);
 };
-watch([search, year, authorId], () => {
+
+const scheduleBooksReload = (): void => {
   pagination.value.page = 1;
 
   if (searchTimeout) {
@@ -128,6 +129,10 @@ watch([search, year, authorId], () => {
   searchTimeout = setTimeout(() => {
     void loadBooks();
   }, 350);
+};
+
+watch([search, year, authorId], () => {
+  scheduleBooksReload();
 });
 
 onMounted(() => {

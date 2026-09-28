@@ -27,6 +27,27 @@ export interface BookResponse {
   data: Book;
 }
 
+const appendBookFormFields = (
+  formData: FormData,
+  data: BookFormData,
+): void => {
+  formData.append('title', data.title);
+  formData.append('year', String(data.year));
+  formData.append('cover', data.cover);
+
+  data.author_ids.forEach((authorId) => {
+    formData.append('author_ids[]', String(authorId));
+  });
+
+  if (data.description) {
+    formData.append('description', data.description);
+  }
+
+  if (data.isbn) {
+    formData.append('isbn', data.isbn);
+  }
+};
+
 export const getBooks = async (
   params: BooksQuery = {},
 ): Promise<BooksResponse> => {
@@ -46,9 +67,7 @@ export const getBooks = async (
 export const getBook = async (
   id: number,
 ): Promise<BookResponse> => {
-  const response = await apiClient.get<BookResponse>(
-    `/books/${id}`,
-  );
+  const response = await apiClient.get<BookResponse>(`/books/${id}`);
 
   return response.data;
 };
@@ -58,26 +77,9 @@ export const createBook = async (
 ): Promise<BookResponse> => {
   const formData = new FormData();
 
-  formData.append('title', data.title);
-  formData.append('year', String(data.year));
-  formData.append('cover', data.cover);
+  appendBookFormFields(formData, data);
 
-  data.author_ids.forEach((authorId) => {
-    formData.append('author_ids[]', String(authorId));
-  });
-
-  if (data.description) {
-    formData.append('description', data.description);
-  }
-
-  if (data.isbn) {
-    formData.append('isbn', data.isbn);
-  }
-
-  const response = await apiClient.post<BookResponse>(
-    '/books',
-    formData,
-  );
+  const response = await apiClient.post<BookResponse>('/books', formData);
 
   return response.data;
 };
@@ -88,26 +90,9 @@ export const updateBook = async (
 ): Promise<BookResponse> => {
   const formData = new FormData();
 
-  formData.append('title', data.title);
-  formData.append('year', String(data.year));
-  formData.append('cover', data.cover);
+  appendBookFormFields(formData, data);
 
-  data.author_ids.forEach((authorId) => {
-    formData.append('author_ids[]', String(authorId));
-  });
-
-  if (data.description) {
-    formData.append('description', data.description);
-  }
-
-  if (data.isbn) {
-    formData.append('isbn', data.isbn);
-  }
-
-  const response = await apiClient.put<BookResponse>(
-    `/books/${id}`,
-    formData,
-  );
+  const response = await apiClient.put<BookResponse>(`/books/${id}`, formData);
 
   return response.data;
 };

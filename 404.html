@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>backlist</title>
+    <script>
+      (() => {
+        const base = '/backlist/';
+        const path = location.pathname.replace(/\/+$/, '');
+
+        if (path === '/backlist' || path === '/backlist/') {
+          location.replace(base);
+          return;
+        }
+
+        const route = path.startsWith('/backlist/') ? path.slice('/backlist/'.length) : path.replace(/^\//, '');
+        const target = route ? `${base}?redirect=/${encodeURIComponent(route)}` : base;
+        location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
